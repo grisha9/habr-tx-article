@@ -29,6 +29,25 @@ class JdbcIntegrationTests {
         println("transaction readonly: $transactionalR")
     }
 
+    @Test
+    fun testWithoutTx() {
+        val result: LongSummaryStatistics = performTest({ bookRepository.getByIsbn("1") }, 1000)
+        println("transaction no      : $result")
+    }
+
+    @Test
+    fun testTx() {
+        val result: LongSummaryStatistics = performTest({ bookRepository.getByIsbnTransactional("1") }, 1000)
+        println("transaction         : $result")
+    }
+
+    @Test
+    fun testTxReadOnly() {
+        val result: LongSummaryStatistics = performTest({ bookRepository.getByIsbnTransactionalR("1") }, 1000)
+        println("transactionRead     : $result")
+    }
+
+
     companion object {
         @Container
         @ServiceConnection

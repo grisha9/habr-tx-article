@@ -37,6 +37,24 @@ class JpaIntegrationTests {
         println("transaction readonly: $transactionalR")
     }
 
+    @Test
+    fun testWithoutTx() {
+        val result = TestUtil.performTest({ bookRepository.findByIsbn("2") }, 1000)
+        println("transaction no       : $result")
+    }
+
+    @Test
+    fun testTx() {
+        val result = TestUtil.performTest({ bookTransactionalRepo.findByIsbn("2") }, 1000)
+        println("transaction         : $result")
+    }
+
+    @Test
+    fun testTxReadOnly() {
+        val result = TestUtil.performTest({ bookTransactionalReadRepo.findByIsbn("2") }, 1000)
+        println("transaction readonly: $result")
+    }
+
     companion object {
         @Container
         @ServiceConnection
